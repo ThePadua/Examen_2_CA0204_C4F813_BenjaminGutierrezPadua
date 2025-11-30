@@ -120,7 +120,19 @@ moras <- moras %>%
   )
 ```
 
-**3)**
+**3) Detección de valores ausentes para cada columna**
+
+```{r}
+## Con la finalidad de simplifcar se calculara el porcentaje de ausentes solo para los que se conoce por desarrollo previo en inciso de Excel que habian ausentes 
+#Ausentes Tipo_Aseguramiento
+porcentaje_na_Aseguramiento <- (sum(trimws(moras$TIPO_ASEGURAMIENTO) == "") / length(moras$TIPO_ASEGURAMIENTO)) * 100
+#Ausentes en Edad
+porcentaje_na_Edad <- (sum(is.na(moras$EDAD))/length(moras$EDAD))*100
+
+#Ausentes en Salario
+
+porcentaje_na_Salario <- (sum(is.na(moras$SALARIO_numeric))/length(moras$EDAD))*100
+```
 
 **4)**
 
