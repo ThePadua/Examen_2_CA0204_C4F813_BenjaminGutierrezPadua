@@ -157,4 +157,41 @@ moras <- moras %>%
 
 **5)**
 
+```{r}
+## Grafica para representar cantidad de invdividuos por categoria
+##Tabla de frecuencias
+frecuencia_categoria <- moras %>%
+  count(TIPO_ASEGURAMIENTO_imputado, SECTOR, name = "frecuencia")
+
+ggplot(frecuencia_categoria, aes (x = SECTOR, y = frecuencia, fill = SECTOR)) +
+  geom_col()+
+  facet_wrap(~ TIPO_ASEGURAMIENTO_imputado) +
+  labs(
+    title = "Distribución absoluta individuos por categoría",
+    
+  ) +
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 0, hjust = 1))
+  
+
+```
+
+Análisis de los resultados observados
+
+En la presente gráfica se muestra la distribución absoluta de los cinco mil individuos del conjunto de datos en cada una de las respectivas categorías como los son Asalariado, Asegurado Voluntario, Convenios Especiales tanto como de Asegurado Voluntario y Trabajador independiente , pensionado en su propio sistema y como trabajador independiente, del cual se extraen las siguientes conclusiones.
+
+Asalariado: Suponen la categoría en la que mayor concentración de invidivuos pertenece tanto para el Sector público como el privado.
+
+Asegurado voluntario: No se observa ningún trabajador del sector público en esta categoría, es la tercera de más concentración para los miembros del sector privado.
+
+Convenio Especial- Asegurado Voluntario: Se puede denotar que es la categoría de tipo de asegurado en la que menor cantidad de población hay concentrada de la muestra tomada, nuev.amente no se observa ningún trabajador del sector público en esta categoría.
+
+Convenio Especial- Trabajadores Independientes: Es la segunda categoría de menor concetración de población de toda la muestra tomada (en términos absolutos, es decir tanto privado como público en conjunto) y no se precisan a individuos del sector privado en esta categoría.
+
+Pensionado en su Propio Sistema: Tercera categoría en la que menos concetración de individuos hay en terminos absolutos y ninguna de las observaciones corresponde al sector privado, esta muestra puede corresponder a individuos que se encuentren en el sistema de la Junta de Pensiones del Magisterio Nacional (JUPEMA) o bien del fondo de Jubilaciones y Pensiones del Poder Judicial.
+
+Trabajador Independiente: Es la categoría de segunda mayor concentración para los individuos del sector privado y no se observa ningún individuo del sector público en este componente.
+
+En general: La representación gráfica permite inferir que la mayor proporción de la población son asalariados (dependen de un patrono) y que en términos generales hay una mayor concentración de inviduos en el sector privado que público.
+
 **6)**
