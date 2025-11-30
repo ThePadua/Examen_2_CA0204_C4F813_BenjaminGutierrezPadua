@@ -75,7 +75,7 @@ resumen_salario <- moras %>%
     min = min(SALARIO_numeric, na.rm =T),
     max = max(SALARIO_numeric, na.rm = T),
     mediana = median(SALARIO_numeric,na.rm = T),
-    promedio_edad = mean(SALARIO_numeric,na.rm = T),
+    promedio = mean(SALARIO_numeric,na.rm = T),
     Cuartil_1 = quantile(SALARIO_numeric,0.25, na.rm = T),
     Cuartil_3 = quantile(SALARIO_numeric,0.75, na.rm = T)
   )
@@ -96,7 +96,29 @@ print(resumen_salario)
 print(resumen_edad)
 ```
 
-**2)**
+**2) Prueba Z-Score**
+
+Se aplica prueba Z-Score para determinar si son atipicos los valores existentes
+
+```{r}
+#Desviacion estandar de la edad 
+sd_edad <- sd(moras$EDAD, na.rm = T)
+#Desviacion estandar del salario
+sd_salario <- sd(moras$SALARIO_numeric, na.rm = T)
+#Prueba Z-Score
+moras<- moras %>%
+  mutate(
+    Z_Score_edad = abs(((EDAD - resumen_edad$promedio_edad ) / sd_edad)),
+    Z_Score_salario = abs(((SALARIO_numeric - resumen_salario$promedio) / sd_salario))
+  )
+
+#Indicar es atipico 
+moras <- moras %>% 
+  mutate(
+    Atipico_edad = if_else(Z_Score_edad > 1.96, "Sí","No"), 
+    Atipico_salario = if_else(Z_Score_salario > 1.96, "Si", "No")
+  )
+```
 
 **3)**
 
