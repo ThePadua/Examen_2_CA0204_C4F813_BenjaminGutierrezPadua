@@ -134,7 +134,26 @@ porcentaje_na_Edad <- (sum(is.na(moras$EDAD))/length(moras$EDAD))*100
 porcentaje_na_Salario <- (sum(is.na(moras$SALARIO_numeric))/length(moras$EDAD))*100
 ```
 
-**4)**
+**4) Imputación valores faltantes**
+
+Estrategias determinadas a emplear
+
+**Salario** : Dado que el porcentaje de ausentes es menor al 1% , se considera conveniente realizar la imputación mediante la asignación de la mediana que es el valor medio de los datos ordenados, de modo que no se infla el valor imputado como podría darse al seleccionar el promedio que canaliza los valores que más se puedan desviar, y de esta forma se imputa sin generar tergiversaciones.
+
+**Edad**: De manera análoga al Salario, se va a optar por imputar respecto a la Mediana , como el valor de referencia que no tergiversa los datos
+
+**Aseguramiento**: Para este componente se ha identificado que los ausentes son el ID 72 y el ID 151 que correspondenden respectivamente al sector público y privado respectivamente, por lo que se optará por imputar tomando de referencia la moda considerando la moda del tipo de aseguramiento respecto a la categoría sector, es decir: por ejemplo si la moda de los que cumplen estar en la categoría sector privado es asalariado, entonces imputar el tipo de aseguramiento por asalariado, y dado que el porcentaje de ausentes son menor al 0.05 % y resulta que sus Z-score respectivos indicaron que no son atípicos (para ninguna de las dos evaluaciones) esto no supondrá una alteración significativa del conjunto de datos al imputarlo de esta manera
+
+```{r}
+## Se imputa simpleficando el analisis de categoria de sector publico o privado , dado que conocemos es Asalariado
+moras <- moras %>% 
+  mutate(
+    Salario_imputado = if_else(is.na(SALARIO_numeric),resumen_salario$mediana, SALARIO_numeric),
+    Edad_imputado = if_else(is.na(EDAD), resumen_edad$mediana, EDAD),
+    TIPO_ASEGURAMIENTO_imputado = if_else(trimws(TIPO_ASEGURAMIENTO) == "", "ASALARIADO", TIPO_ASEGURAMIENTO)
+  )
+
+```
 
 **5)**
 
