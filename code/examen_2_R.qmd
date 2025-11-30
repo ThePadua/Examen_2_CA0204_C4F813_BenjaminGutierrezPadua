@@ -194,4 +194,39 @@ Trabajador Independiente: Es la categoría de segunda mayor concentración para 
 
 En general: La representación gráfica permite inferir que la mayor proporción de la población son asalariados (dependen de un patrono) y que en términos generales hay una mayor concentración de inviduos en el sector privado que público.
 
-**6)**
+**6)** **Representación porcentual entre morosos y no morosos por categoría**
+
+sum(trimws(moras\$Atipico_edad) == "Sí", na.rm = T) \## Congruente observado
+
+sum(trimws(moras\$Atipico_salario) == "Si", na.rm = T) \#
+
+```{r}
+## Reordeno el conjunto de datos 
+moras <- moras %>%
+  mutate(
+    MOROSO = factor(INDICADOR_MOROSO, levels = c("Sí", "No"))
+  )
+# Se agrupa por la categoria de asegurados a morosos y no morosos
+frecuencia_morosidad <- moras %>% 
+  group_by(TIPO_ASEGURAMIENTO, INDICADOR_MOROSO) %>% 
+  summarise(n = n(), .groups = "drop")
+
+
+ggplot(frecuencia_morosidad,
+       aes(x = TIPO_ASEGURAMIENTO,
+           y = n,
+           fill = INDICADOR_MOROSO)) +
+  geom_col(position = "fill") +  # barras apiladas al 100%
+  scale_y_continuous() +
+  labs(
+    title = "Distribución porcentual de morosos según tipo de aseguramiento",
+    x = "Tipo de aseguramiento",
+    y = "Porcentaje",
+    fill = "Moroso"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 1)
+  ) 
+## Nota debo corregir barra de la izquierda dado que se genero por error (na? o vacio?) , revisar...
+```
