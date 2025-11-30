@@ -1,0 +1,107 @@
+---
+title: "examen_2_R"
+author: "Benjamín Gutiérrez Padua. C4F813"
+format: 
+  html:
+    self-contained: true
+    toc: true
+    number-sections: true
+    code-fold: show
+    df-print: paged
+    smooth-scroll: true
+    theme: cosmo
+  pdf: 
+    number-sections: true
+    pdf-engine: pdflatex
+    mainfront: Arial
+    papersize: letter
+    geometry: margin=1in
+editor: visual
+---
+
+# Resolución de examen (R)
+
+Benjamín Gutiérrez Padua. C4F813.
+
+Enlace a repositorio de github: <https://github.com/ThePadua/Examen_2_CA0204_C4F813_BenjaminGutierrezPadua.git>
+
+-   Librerías de trabajo:
+
+```{r}
+#Se importan librerias
+library("dplyr");library("ggplot2")
+```
+
+-   Importar conjunto de datos:
+
+```{r}
+# Se importa el data set de trabajo
+moras <- read.delim('../raw_data/moras.txt', sep = "," ,header = T)
+```
+
+**1) Resumen cinco números columnas numéricas.**
+
+```{r}
+#Conversión a numeric de Salario mediante depuración en columnas, con verificacion rigurosa en la conversion (problema de diferente media con la de excel solucionado)
+moras <- moras %>%
+  mutate(
+    SALARIO_chr   = as.character(SALARIO), ##Lea character       
+    SALARIO_limp  = gsub("[^0-9]", "", SALARIO_chr),       ##Remover si no es digito
+    SALARIO_limp  = ifelse(SALARIO_limp == "", NA, SALARIO_limp),
+    SALARIO_numeric   = as.numeric(SALARIO_limp)
+  )
+
+sum(is.na(moras$SALARIO_numeric)) #Congruente con lo observado 
+sum(is.na(moras$EDAD))## Congruente observado 
+sum(trimws(moras$TIPO_ASEGURAMIENTO) == "") ## Congruente observado
+
+```
+
+```{r}
+## Edad
+resumen_edad <- moras %>% 
+  summarise(
+    min = min(EDAD, na.rm =T),
+    max = max(EDAD, na.rm = T),
+    mediana = median(EDAD,na.rm = T),
+    promedio_edad = mean(EDAD,na.rm = T),
+    Cuartil_1 = quantile(EDAD,0.25, na.rm = T),
+    Cuartil_3 = quantile(EDAD,0.75, na.rm = T)
+  )
+  
+## Salario
+resumen_salario <- moras %>% 
+  summarise(
+    min = min(SALARIO_numeric, na.rm =T),
+    max = max(SALARIO_numeric, na.rm = T),
+    mediana = median(SALARIO_numeric,na.rm = T),
+    promedio_edad = mean(SALARIO_numeric,na.rm = T),
+    Cuartil_1 = quantile(SALARIO_numeric,0.25, na.rm = T),
+    Cuartil_3 = quantile(SALARIO_numeric,0.75, na.rm = T)
+  )
+
+```
+
+Se imprime resumen de 5 (6) números
+
+-   Salario
+
+```{r}
+print(resumen_salario)
+```
+
+-   Edad
+
+```{r}
+print(resumen_edad)
+```
+
+**2)**
+
+**3)**
+
+**4)**
+
+**5)**
+
+**6)**
